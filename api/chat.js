@@ -26,17 +26,17 @@ export default async function handler(req, res) {
   },
   {
     role: "user",
-    content: `Generate a compelling sales pitch for solar panel cleaning services in the Bega Valley. Your response must include:
+          content: `Write a persuasive paragraph for homeowners in the Bega Valley encouraging them to request solar panel cleaning services. Your tone should be friendly but informative. Include the following:
 
-1. An opening that explains how dirty solar panels reduce efficiency.
-2. A real-world stat about average solar generation for a 5kW system in Bega Valley (~6,500–7,000 kWh/year).
-3. An example showing how cleaning can restore up to 20% efficiency and save around $300 per year at $0.25/kWh.
-4. A 5-year savings estimate.
-5. A strong closing call to action.
-
-Important: You must include the exact contact details at the end of the message:
-- Phone: 0466545251
-- Email: s.r.lamont@proton.me`
+- Explain how dirt, pollen, and bird droppings reduce solar panel efficiency over time.
+- Mention that in the Bega Valley, a standard 5kW system produces around 6,600 kWh per year.
+- Note that dirty panels can lose up to 15–20% efficiency, potentially reducing generation by ~1,000–1,300 kWh annually.
+- At an average electricity rate of $0.25 per kWh, that’s up to $325 in lost value each year.
+- Emphasize the long-term savings — over 5 years, that’s around $1,625.
+- Briefly suggest that regular cleaning also extends the lifespan of the system.
+- End with a clear call to action including this contact information:
+  - Phone: 0466545251
+  - Email: s.r.lamont@proton.me`
   }
 ]
       }),

@@ -26,17 +26,24 @@ export default async function handler(req, res) {
   },
   {
     role: "user",
-          content: `Write a persuasive paragraph for homeowners in the Bega Valley encouraging them to request solar panel cleaning services. Your tone should be friendly but informative. Include the following:
+          content: `Write a persuasive and well-formatted response for homeowners in the Bega Valley encouraging them to request professional solar panel cleaning services. Make the output visually appealing using headings, short paragraphs, and bullet points. Include the following:
 
-- Explain how dirt, pollen, and bird droppings reduce solar panel efficiency over time.
-- Mention that in the Bega Valley, a standard 5kW system produces around 6,600 kWh per year.
-- Note that dirty panels can lose up to 15–20% efficiency, potentially reducing generation by ~1,000–1,300 kWh annually.
-- At an average electricity rate of $0.25 per kWh, that’s up to $325 in lost value each year.
-- Emphasize the long-term savings — over 5 years, that’s around $1,625.
-- Briefly suggest that regular cleaning also extends the lifespan of the system.
-- End with a clear call to action including this contact information:
-  - Phone: 0466545251
-  - Email: s.r.lamont@proton.me`
+- A short intro explaining the importance of solar panel cleanliness.
+- A heading: "📉 Why Dirty Panels Cost You Money"
+  - Explain how dirt, pollen, bird droppings, and grime reduce efficiency.
+  - Mention that in the Bega Valley, a typical 5kW system generates around 6,600 kWh annually.
+  - Point out that dirty panels can lose up to 15–20% efficiency (~1,000–1,300 kWh lost annually).
+  - Estimate lost savings at $0.25/kWh — roughly $250–$325 per year.
+
+- A heading: "💰 Long-Term Financial Benefits"
+  - Highlight how cleaning can recover that lost energy and save ~$1,625 over 5 years.
+  - Mention improved system lifespan and warranty protection.
+
+- A heading: "📞 Book Your Cleaning Today"
+  - Include this contact info at the bottom:
+    - Phone: 0466545251
+    - Email: s.r.lamont@proton.me
+    "Format the entire response in clean HTML with headings (<h2>), paragraphs (<p>), and bullet points (<ul><li>) where appropriate."
   }
 ]
       }),

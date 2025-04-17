@@ -20,9 +20,25 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are a helpful assistant providing sales and service information." },
-          { role: "user", content: prompt || "Generate a compelling reason to request solar panel cleaning services including long-term savings benefits, the contact details to be included at bottom should must be 0466545251 and email: s.r.lamont@proton.me, the response should be something like this, In the Bega Valley, a typical 5kW solar panel system can generate around 6,500 to 7,000 kWh annually. However, dust and dirt can reduce efficiency by up to 20%. Regular cleaning can restore up to 20% of your energy generation, saving approximately $300 per year based on average electricity rates of $0.25 per kWh.Case Example: After cleaning, the system can generate an additional 1,300 kWh annually, saving you $325 per year. Over 5 years, that's $1,625 in savings!Contact Us: Call us at 0466545251 or email us at solarcleaning.com.au to book your service!" }
-        ]
+  {
+    role: "system",
+    content: "You are a helpful assistant providing sales and service information."
+  },
+  {
+    role: "user",
+    content: `Generate a compelling sales pitch for solar panel cleaning services in the Bega Valley. Your response must include:
+
+1. An opening that explains how dirty solar panels reduce efficiency.
+2. A real-world stat about average solar generation for a 5kW system in Bega Valley (~6,500–7,000 kWh/year).
+3. An example showing how cleaning can restore up to 20% efficiency and save around $300 per year at $0.25/kWh.
+4. A 5-year savings estimate.
+5. A strong closing call to action.
+
+Important: You must include the exact contact details at the end of the message:
+- Phone: 0466545251
+- Email: s.r.lamont@proton.me`
+  }
+]
       }),
     });
 

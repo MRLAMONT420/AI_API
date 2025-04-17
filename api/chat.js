@@ -26,7 +26,7 @@ messages: [
   },
   {
     role: "user",
-    content: `Write a persuasive and well-formatted response for homeowners in the Bega Valley encouraging them to request professional solar panel cleaning services. Make the output visually appealing using headings, short paragraphs, and bullet points. Include the following:
+    content: `Write a persuasive and well-formatted "business card" to give to homeowners in the Bega Valley encouraging them to request professional solar panel cleaning services. Make the output visually appealing using headings, short paragraphs, and bullet points. Include the following:
 
 - A short intro explaining the importance of solar panel cleanliness.
 - A heading: "📉 Why Dirty Panels Cost You Money"
@@ -42,9 +42,7 @@ messages: [
 - A heading: "📞 Book Your Cleaning Today"
   - Include this contact info at the bottom:
     - Phone: 0466545251
-    - Email: s.r.lamont@proton.me
-
-Format the entire response in clean HTML with headings (<h2>), paragraphs (<p>), and bullet points (<ul><li>) where appropriate.`
+    - Email: s.r.lamont@proton.me`
   }
 ]
       }),

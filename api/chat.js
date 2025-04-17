@@ -43,7 +43,7 @@ export default async function handler(req, res) {
   - Include this contact info at the bottom:
     - Phone: 0466545251
     - Email: s.r.lamont@proton.me
-    Format the entire response in clean HTML with headings (<h2>), paragraphs (<p>), and bullet points (<ul><li>) where appropriate.
+    Format the entire response in clean HTML with headings (<h2>), paragraphs (<p>), and bullet points (<ul><li>) where appropriate.`
   }
 ]
       }),

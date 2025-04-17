@@ -12,7 +12,7 @@
   <div id="response">Loading response...</div>
 <script>
   const urlParams = new URLSearchParams(window.location.search);
-  const prompt = urlParams.get("prompt") || "Tell me a fun fact about space.";
+  const prompt = urlParams.get("prompt") || "Generate a compelling reason to request solar panel cleaning services including long-term savings benefits, and contact details like phone and email.";
 
   fetch(`/api/chat?prompt=${encodeURIComponent(prompt)}`)
     .then(res => res.json())

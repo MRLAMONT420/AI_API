@@ -1,11 +1,15 @@
 export default async function handler(req, res) {
-  const { prompt } = req.query;
+  try {
+    const { prompt } = req.query;
 
-  // Simulate delay for realism
-  await new Promise(resolve => setTimeout(resolve, 500));
+    // Simulate a delay
+    await new Promise(resolve => setTimeout(resolve, 300));
 
-  // Return dummy result
-  return res.status(200).json({
-    result: `🔧 This is a test response for the prompt: "${prompt}"`
-  });
+    const fakeResponse = `🔧 This is a test response for the prompt: "${prompt || "No prompt received"}"`;
+
+    res.status(200).json({ result: fakeResponse });
+  } catch (err) {
+    console.error("🔥 Dummy API handler crashed:", err);
+    res.status(500).json({ error: "Internal Server Error in dummy handler." });
+  }
 }

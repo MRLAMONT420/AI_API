@@ -1,34 +1,85 @@
-
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>ChatGPT QR</title>
+  <title>ChatGPT Solar Panel Cleaning</title>
   <style>
     body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
+    #response { margin-top: 20px; font-size: 1.2rem; }
+    #question { width: 100%; padding: 10px; margin-bottom: 10px; font-size: 1rem; }
+    button { padding: 10px 15px; font-size: 1rem; cursor: pointer; }
   </style>
 </head>
 <body>
+  <h1>Ask About Solar Panel Cleaning Services</h1>
+
+  <!-- Display initial response from OpenAI -->
   <div id="response">Loading response...</div>
-<script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const prompt = urlParams.get("prompt") || "Generate a compelling reason to request solar panel cleaning services including long-term savings benefits, and contact details like phone and email.";
 
-  fetch(`/api/chat?prompt=${encodeURIComponent(prompt)}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log("💬 API Response:", data); // DEBUG: see what the API sends back
+  <!-- Input field and button for asking follow-up questions -->
+  <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
+  <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
 
-      if (data.result) {
-        document.getElementById("response").innerText = data.result;
-      } else {
-        document.getElementById("response").innerText = "Error: " + (data.error || "No result from OpenAI.");
+  <script>
+    // Fetch the initial response and enable the input field and button
+    const urlParams = new URLSearchParams(window.location.search);
+    const prompt = urlParams.get("prompt") || "Generate a compelling reason to request solar panel cleaning services including long-term savings benefits, and contact details like phone and email.";
+
+    fetch(`/api/chat?prompt=${encodeURIComponent(prompt)}`)
+      .then(res => res.json())
+      .then(data => {
+        console.log("💬 API Response:", data); // DEBUG: see what the API sends back
+
+        if (data.result) {
+          document.getElementById("response").innerText = data.result;
+          // Enable the input field and button after receiving the initial response
+          document.getElementById("question").disabled = false;
+          document.getElementById("askBtn").disabled = false;
+        } else {
+          document.getElementById("response").innerText = "Error: " + (data.error || "No result from OpenAI.");
+        }
+      })
+      .catch(err => {
+        console.error("❌ Fetch error:", err);
+        document.getElementById("response").innerText = "Fetch error: " + err.message;
+      });
+
+    // Function to handle the user's follow-up question
+    function askQuestion() {
+      const question = document.getElementById("question").value;
+      const responseDiv = document.getElementById("response");
+
+      if (question.trim() === "") {
+        alert("Please enter a question.");
+        return;
       }
-    })
-    .catch(err => {
-      console.error("❌ Fetch error:", err);
-      document.getElementById("response").innerText = "Fetch error: " + err.message;
-    });
-</script>
+
+      // Sending the user's question to the backend
+      fetch(`/api/chat?prompt=${encodeURIComponent(question)}`)
+        .then(res => res.json())
+        .then(data => {
+          console.log("💬 API Response:", data);
+
+          if (data.result) {
+            responseDiv.innerHTML = data.result;
+          } else {
+            responseDiv.innerHTML = generateErrorMessage();
+          }
+        })
+        .catch(err => {
+          console.error("❌ Fetch error:", err);
+          responseDiv.innerHTML = generateErrorMessage();
+        });
+    }
+
+    // Function to generate the error message with contact info
+    function generateErrorMessage() {
+      return `
+        <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>
+        <p>Phone: 0466545251</p>
+        <p>Email: s.r.lamont@proton.me</p>
+      `;
+    }
+  </script>
 </body>
 </html>

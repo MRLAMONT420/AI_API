@@ -20,8 +20,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are a helpful assistant." },
-          { role: "user", content: prompt },
+          { role: "system", content: "You are a helpful assistant providing sales and service information." },
+          { role: "user", content: prompt || "Generate a compelling reason to request solar panel cleaning services including long-term savings benefits, and contact details like phone (0466545251) and email: s.r.lamont@proton.me" },
         ],
       }),
     });

@@ -21,11 +21,8 @@
   <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
 
   <script>
-    // Fetch the initial response and enable the input field and button
-    const urlParams = new URLSearchParams(window.location.search);
-    const prompt = urlParams.get("prompt") || "Generate a compelling reason to request solar panel cleaning services including long-term savings benefits, and contact details like phone and email.";
-
-    fetch(`/api/chat?prompt=${encodeURIComponent(prompt)}`)
+    // Fetch the initial response from OpenAI (no need to specify prompt here, backend handles it)
+    fetch(`/api/chat`)
       .then(res => res.json())
       .then(data => {
         console.log("💬 API Response:", data); // DEBUG: see what the API sends back

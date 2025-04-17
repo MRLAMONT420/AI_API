@@ -3,15 +3,14 @@ export default async function handler(req, res) {
   const { prompt } = req.query;
 
   if (!OPENAI_API_KEY) {
-    return res.status(500).json({ error: 'API key is missing.' });
+    return res.status(500).json({ error: "API key is missing" });
   }
 
   if (!prompt) {
-    return res.status(400).json({ error: 'Prompt is required.' });
+    return res.status(400).json({ error: "Prompt is required" });
   }
 
   try {
-    // Request to OpenAI
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -19,7 +18,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4",
+        model: "gpt-4", // or try "gpt-3.5-turbo" for testing
         messages: [
           { role: "system", content: "You are a helpful assistant." },
           { role: "user", content: prompt },
@@ -27,20 +26,20 @@ export default async function handler(req, res) {
       }),
     });
 
-    // Parse the response
     const data = await response.json();
 
-    // Debugging log
-    console.log("OpenAI response:", data);
+    console.log("OpenAI raw response:", JSON.stringify(data, null, 2));
 
-    // Ensure the data structure is valid and accessible
-    if (data.choices && data.choices[0] && data.choices[0].message) {
-      return res.status(200).json({ result: data.choices[0].message.content });
-    } else {
-      return res.status(500).json({ error: 'Invalid response from OpenAI API' });
+    // Check and return content safely
+    const content = data?.choices?.[0]?.message?.content;
+    if (!content) {
+      return res.status(500).json({ error: "No content in OpenAI response", fullResponse: data });
     }
+
+    return res.status(200).json({ result: content });
+
   } catch (error) {
-    console.error("Error making request to OpenAI:", error);
-    return res.status(500).json({ error: 'Something went wrong with the API request.' });
+    console.error("Error with OpenAI request:", error);
+    return res.status(500).json({ error: "Failed to fetch from OpenAI" });
   }
 }

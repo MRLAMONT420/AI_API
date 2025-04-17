@@ -10,18 +10,24 @@
 </head>
 <body>
   <div id="response">Loading response...</div>
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const prompt = urlParams.get("prompt") || "Tell me a fun fact about space.";
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const prompt = urlParams.get("prompt") || "Tell me a fun fact about space.";
 
-    fetch(`/api/chat?prompt=${encodeURIComponent(prompt)}`)
-      .then(res => res.json())
-      .then(data => {
+  fetch(`/api/chat?prompt=${encodeURIComponent(prompt)}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log("API Response:", data);  // Debugging line to see the response
+      if (data.result) {
         document.getElementById("response").innerText = data.result;
-      })
-      .catch(err => {
-        document.getElementById("response").innerText = "Error: " + err.message;
-      });
-  </script>
+      } else {
+        document.getElementById("response").innerText = "Error: No result from OpenAI.";
+      }
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      document.getElementById("response").innerText = "Error: " + err.message;
+    });
+</script>
 </body>
 </html>

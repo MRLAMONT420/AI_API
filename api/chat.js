@@ -1,8 +1,20 @@
+import { supabase } from '../supabase.js';
 export default async function handler(req, res) {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
   if (!OPENAI_API_KEY) {
     return res.status(500).json({ error: "Missing OpenAI API key." });
+  }
+
+  try {
+    const { data: faqs, error: supabaseError } = await supabase.from('faqs').select('*');
+    if (supabaseError) {
+      console.error("❌ Supabase fetch error:", supabaseError);
+    } else {
+      console.log("✅ Supabase FAQs fetched:", faqs);
+    }
+  } catch (err) {
+    console.error("🔥 Supabase fetch exception:", err);
   }
 
   // Hardcode the initial prompt in the backend

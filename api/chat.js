@@ -7,32 +7,51 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Missing OpenAI API key." });
   }
 
-  // Fetch data from Supabase
+  // === Fetch FAQs ===
   let faqs = [];
-  let supabaseError = null;
+  let faqsError = null;
 
   try {
     const { data, error } = await supabase.from('FAQs').select('*');
     if (error) {
-      console.error("❌ Supabase fetch error:", error);
-      supabaseError = error;
+      console.error("❌ Supabase FAQs error:", error);
+      faqsError = error;
     } else {
       faqs = data;
-      console.log("✅ Supabase FAQs fetched:", faqs);
     }
   } catch (err) {
-    console.error("🔥 Supabase fetch exception:", err);
-    supabaseError = err;
+    console.error("🔥 Supabase FAQs exception:", err);
+    faqsError = err;
   }
 
-  if (supabaseError) {
-    return res.status(500).json({ error: "Error fetching FAQs from Supabase.", details: supabaseError });
+  // === Fetch Pricing ===
+  let pricing = [];
+  let pricingError = null;
+
+  try {
+    const { data, error } = await supabase.from('pricing').select('*');
+    if (error) {
+      console.error("❌ Supabase pricing error:", error);
+      pricingError = error;
+    } else {
+      pricing = data;
+    }
+  } catch (err) {
+    console.error("🔥 Supabase pricing exception:", err);
+    pricingError = err;
   }
 
-  // Format FAQs into a markdown-style string for context
+  if (faqsError || pricingError) {
+    return res.status(500).json({ error: "Error fetching data from Supabase.", details: { faqsError, pricingError } });
+  }
+
+  // Format FAQs
   const faqsText = faqs.map(faq => `**Q: ${faq.question}**\nA: ${faq.answer}`).join('\n\n');
 
-  // Your original hardcoded initialPrompt
+  // Format Pricing
+  const pricingText = pricing.map(item => `• **${item.service}** — $${item.price}`).join('\n');
+
+  // === Your Hardcoded Prompt (stays as main focus) ===
   const initialPrompt = `Write a persuasive and well-formatted "business card" to give to homeowners in the Bega Valley encouraging them to request professional solar panel cleaning services. Make the output visually appealing using headings, short paragraphs, and bullet points. Include the following:
 
   - A short intro explaining the importance of solar panel cleanliness.
@@ -51,22 +70,25 @@ export default async function handler(req, res) {
       - Phone: 0466545251
       - Email: s.r.lamont@proton.me`;
 
-  // If user provided a prompt, use it — otherwise use the hardcoded one
+  // Query param overrides default prompt
   const { prompt } = req.query;
   const userPrompt = prompt || initialPrompt;
 
-  // Combine with FAQ context
+  // Build full context to include FAQs and pricing
   const finalPrompt = `
-You are a helpful assistant for a solar panel cleaning business in Bega Valley.
+You are a helpful assistant for a solar panel cleaning business in the Bega Valley.
 
-Below are some frequently asked questions (FAQs) for additional context. Use these to inform your response if relevant.
-
+Here are some FAQs from past customers:
 ${faqsText}
 
-Now respond to this request:
+Here is the current pricing list:
+${pricingText}
+
+Now answer this request:
 "${userPrompt}"
 `;
 
+  // === OpenAI Request ===
   try {
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -90,15 +112,9 @@ Now respond to this request:
     }
 
     const data = await response.json();
-    if (data.error) {
-      console.error("❌ OpenAI API Error:", data.error);
-      return res.status(500).json({ error: data.error.message });
-    }
-
     const content = data?.choices?.[0]?.message?.content;
 
     if (!content) {
-      console.error("⚠️ Missing content in OpenAI response.");
       return res.status(500).json({ error: "No content returned from OpenAI.", fullResponse: data });
     }
 

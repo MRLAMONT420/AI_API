@@ -19,6 +19,43 @@
       flex-direction: column;
       justify-content: flex-start;
     }
+ /* Hero section */
+    .hero {
+      position: relative;
+      height: 30vh;               /* Adjust height as needed */
+      min-height: 200px;
+      background-image: url('images/solar-background.jpg'); /* Your image path */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+    }
+
+    /* Dark overlay to improve text contrast */
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 0;
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+      margin: 0;
+      text-align: center;
+    }
+
+    .container {
+      flex-grow: 1;
+      padding: 2rem;
+    }
 
     h1 {
       font-size: 2rem;
@@ -54,10 +91,6 @@
       }
     }
 
-    .container {
-      flex-grow: 1;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -76,6 +109,12 @@
   </style>
 </head>
 <body>
+
+   <!-- Hero section with background image -->
+  <section class="hero">
+    <h1>Thank You for Your Interest in Solar Cleaning Services</h1>
+  </section>
+  
   <div class="container">
     <h1>Thank You for your Interest In Solar Cleaning Services</h1>
 

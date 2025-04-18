@@ -75,20 +75,23 @@ const userPrompt = prompt || initialPrompt;
 // Build full context to include FAQs and pricing
 // Build finalPrompt with markdown formatting instructions for OpenAI
 const finalPrompt = `
+
+Now answer this request:
+"${userPrompt}"
+
 You are a helpful assistant for a solar panel cleaning business in the Bega Valley. All responses should be **clearly structured** for easy reading, using markdown for formatting.
 
 
 
-Here are some FAQs from past customers:
+Here are some FAQs from past customers, only include if asked:
 ${faqsText}
 
-Here is the current pricing list in markdown table format:
+Here is the current pricing list in markdown table format , only include if asked:
 | **Service**            | **Price**  | **Description**                               |
 |------------------------|------------|-----------------------------------------------|
 ${pricing.map(item => `| **${item.name}**  | $${item.base_price} | _${item.description}_ |`).join("\n")}
 
-Now answer this request:
-"${userPrompt}"
+
 
 Please make sure to include the following contact information at the end of your response:
 ${contactDetails}

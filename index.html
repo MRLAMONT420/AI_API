@@ -19,12 +19,12 @@
       flex-direction: column;
       justify-content: flex-start;
     }
- /* Hero section */
+
     .hero {
       position: relative;
-      height: 30vh;               /* Adjust height as needed */
+      height: 30vh;
       min-height: 200px;
-      background-image: url('images/solar-background.jpg'); /* Your image path */
+      background-image: url('images/solar-background.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -34,7 +34,6 @@
       color: white;
       text-shadow: 0 1px 3px rgba(0,0,0,0.7);
     }
-
 
     .hero h1 {
       position: relative;
@@ -48,7 +47,6 @@
       flex-grow: 1;
       padding: 2rem;
     }
-
 
     #response { 
       margin-top: 20px;
@@ -97,7 +95,7 @@
 </head>
 <body>
 
-   <!-- Hero section with background image -->
+  <!-- Hero section with background image -->
   <section class="hero">
     <h1>Thank You for Your Interest in Solar Cleaning Services</h1>
   </section>
@@ -116,7 +114,21 @@
   <script>
     // ✅ Fetch the initial response from OpenAI and render with Markdown
     fetch(`/api/chat`)
-      .then(res => res.json())
+      .then(async res => {
+        const contentType = res.headers.get("content-type");
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`API error: ${res.status} - ${errorText}`);
+        }
+
+        if (!contentType || !contentType.includes("application/json")) {
+          const rawText = await res.text();
+          throw new Error(`Expected JSON but got: ${rawText}`);
+        }
+
+        return res.json();
+      })
       .then(data => {
         console.log("💬 API Response:", data);
 

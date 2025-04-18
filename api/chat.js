@@ -54,19 +54,34 @@ export default async function handler(req, res) {
 ).join('\n');
   
   // === Your Hardcoded Prompt (stays as main focus) ===
-  const initialPrompt = `Write a persuasive and well-formatted "business card" to give to homeowners in the Bega Valley encouraging them to request professional solar panel cleaning services. Make the output visually appealing using headings, short paragraphs, and bullet points. Include the following:
+  const initialPrompt = `Generate a professional and compelling digital business card for a solar panel cleaning service based in New South Wales (NSW), 
+  Australia. The business card should include the following points and should be structured with appropriate headings:
 
-  - A short intro explaining the importance of solar panel cleanliness.
-  - A heading: "Why Dirty Panels Cost You Money"
-    - Explain how dirt, pollen, bird droppings, and grime reduce efficiency.
-    - Mention that in the Bega Valley, a typical 5kW system generates around 6,600 kWh annually.
-    - Point out that dirty panels can lose up to 15–20% efficiency (~1,000–1,300 kWh lost annually).
-    - Estimate lost savings at $0.25/kWh — roughly $250–$325 per year.
+Introduction:
+Briefly introduce the importance of solar panel cleaning and how it helps maximize energy production, lower electricity bills, and extend the lifespan 
+of solar systems.
+Emphasize that regular cleaning can help maintain warranty protection and ensure long-term savings.
+Impact of Dirty Panels:
+Mention the average energy generation of a 5kW solar system in NSW (7,000-9,000 kWh/year).
+Explain how dirty panels can reduce efficiency by 15-25%, leading to 1,000-1,750 kWh lost annually, which translates to a $250–$430 annual loss.
+Feed-in Tariffs & Savings:
+Detail the current feed-in tariffs in NSW (around 6–7 cents per kWh) and explain how clean panels can increase the energy output, leading to higher 
+earnings from the grid.
+Include potential extra feed-in earnings (around $60–$84/year) from cleaning.
+Self-Consumption Savings:
+Compare the cost of buying electricity from the grid (around $0.25–$0.30 per kWh) versus generating solar power with cleaned panels. 
+Show how cleaning can save $250–$350 annually on power bills.
+Cost of Cleaning:
+Mention that the typical cost of a solar panel cleaning service is around $200 and explain why this is a wise investment considering 
+the savings on electricity bills, feed-in tariffs, and warranty protection.
+Call to Action:
+Encourage homeowners and businesses to schedule cleaning services to protect their solar investment, improve performance, and lower long-term costs.
+The tone should be professional, informative, and persuasive, making it clear that cleaning is a cost-effective way to maximize savings and ensure 
+optimal solar performance."
+Search
+Reason
 
-  - A heading: "Long-Term Financial Benefits"
-    - Highlight how cleaning can recover that lost energy and save ~$1,625 over 5 years.
-    - Mention improved system lifespan and warranty protection.
-
+ChatGPT can mak
   - A heading: "Book Your Cleaning Today"
     - Include this contact info at the bottom:
       - Phone: 0466545251

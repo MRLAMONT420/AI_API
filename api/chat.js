@@ -55,7 +55,34 @@ export default async function handler(req, res) {
   
   // === Your Hardcoded Prompt (stays as main focus) ===
   const initialPrompt = `Create a clear, professional digital business card for a solar panel cleaning service in Bega Valley New South Wales (NSW), Australia.
+The card should:
+- Use **bold headings** for sections
+- Use **bullet points** for key benefits and stats
+- Be informative and persuasive, focusing on cost savings and performance benefits
 
+**Why Clean Solar Panels?**
+- Boosts energy production, lowers power bills, and extends system lifespan
+- Preserves warranty protection
+- Especially valuable in coastal/rural areas (dust, salt, pollen)
+
+**Energy Loss from Dirty Panels**
+- A 5kW system in NSW generates 7,000–9,000 kWh/year
+- Dirty panels reduce efficiency by 15–25% = 1,000–1,750 kWh lost annually
+- At $0.33/kWh, that's a $250–$430 loss
+
+**Feed-in Tariffs (FiT) & Earnings**
+- NSW FiTs: 4.9–7.4¢/kWh
+- Clean panels = higher output = $55–$83 more per year
+
+**Self-Use Energy Savings**
+- Grid power = $0.32/kWh
+- Extra 1,125 kWh saved = $360/year
+- Cleaning boosts output up to 20% (~$480 value)
+
+**Cleaning Costs & ROI**
+- Typical cleaning = $200
+- Annual benefit = ~$442
+- Payback in ~5.4 months
 
 `; // <-- CLOSE this backtick!
 

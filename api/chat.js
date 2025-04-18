@@ -57,17 +57,17 @@ export default async function handler(req, res) {
   const initialPrompt = `Write a persuasive and well-formatted "business card" to give to homeowners in the Bega Valley encouraging them to request professional solar panel cleaning services. Make the output visually appealing using headings, short paragraphs, and bullet points. Include the following:
 
   - A short intro explaining the importance of solar panel cleanliness.
-  - A heading: "📉 Why Dirty Panels Cost You Money"
+  - A heading: "Why Dirty Panels Cost You Money"
     - Explain how dirt, pollen, bird droppings, and grime reduce efficiency.
     - Mention that in the Bega Valley, a typical 5kW system generates around 6,600 kWh annually.
     - Point out that dirty panels can lose up to 15–20% efficiency (~1,000–1,300 kWh lost annually).
     - Estimate lost savings at $0.25/kWh — roughly $250–$325 per year.
 
-  - A heading: "💰 Long-Term Financial Benefits"
+  - A heading: "Long-Term Financial Benefits"
     - Highlight how cleaning can recover that lost energy and save ~$1,625 over 5 years.
     - Mention improved system lifespan and warranty protection.
 
-  - A heading: "📞 Book Your Cleaning Today"
+  - A heading: "Book Your Cleaning Today"
     - Include this contact info at the bottom:
       - Phone: 0466545251
       - Email: s.r.lamont@proton.me`;

@@ -73,7 +73,7 @@ const userPrompt = prompt || initialPrompt;
 
 // === NEW: Keyword-based section triggers ===
 const faqKeywords = ['faq', 'frequently asked questions', 'questions', 'help', 'assistance', 'inquiries'];
-const pricingKeywords = ['pricing', 'price', 'prices', 'cost', 'rates', 'service price', 'pricing list', 'charges', 'fees'];
+const pricingKeywords = ['pricing', 'price', 'prices', 'cost', 'rates', 'service price', 'pricing list', 'charges', 'fees', 'how much'];
 
 const lowerPrompt = userPrompt.toLowerCase();
 

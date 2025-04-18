@@ -59,7 +59,6 @@ export default async function handler(req, res) {
 
 `; // <-- CLOSE this backtick!
 
-// Standard contact message to include in every response:
 const contactDetails = `
 If you have any questions or would like to schedule an appointment, feel free to get in touch:
 
@@ -72,26 +71,42 @@ Don't hesitate to reach out today and book your professional solar panel cleanin
 const { prompt } = req.query;
 const userPrompt = prompt || initialPrompt;
 
-// Build full context to include FAQs and pricing
-// Build finalPrompt with markdown formatting instructions for OpenAI
-const finalPrompt = `
+// === NEW: Keyword-based section triggers ===
+const faqKeywords = ['faq', 'frequently asked questions', 'questions', 'help', 'assistance', 'inquiries'];
+const pricingKeywords = ['pricing', 'price', 'prices', 'cost', 'rates', 'service price', 'pricing list', 'charges', 'fees'];
 
+const lowerPrompt = userPrompt.toLowerCase();
+
+const includeFaqs = faqKeywords.some(keyword => lowerPrompt.includes(keyword));
+const includePricing = pricingKeywords.some(keyword => lowerPrompt.includes(keyword));
+
+// === Build final prompt ===
+let finalPrompt = `
 Now answer this request:
 "${userPrompt}"
 
 You are a helpful assistant for a solar panel cleaning business in the Bega Valley. All responses should be **clearly structured** for easy reading, using markdown for formatting.
+`;
 
+if (includeFaqs) {
+  finalPrompt += `
 
-
-Here are some FAQs from past customers, only include if asked:
+Here are some FAQs from past customers:
 ${faqsText}
+`;
+}
 
-Here is the current pricing list in markdown table format , only include if asked:
+if (includePricing) {
+  finalPrompt += `
+
+Here is the current pricing list in markdown table format:
 | **Service**            | **Price**  | **Description**                               |
 |------------------------|------------|-----------------------------------------------|
 ${pricing.map(item => `| **${item.name}**  | $${item.base_price} | _${item.description}_ |`).join("\n")}
+`;
+}
 
-
+finalPrompt += `
 
 Please make sure to include the following contact information at the end of your response:
 ${contactDetails}

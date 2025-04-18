@@ -86,7 +86,8 @@ The card should:
 - Payback in ~5.4 months
 
 **Book Your Cleaning Today**
-Encourage homeowners and businesses to protect their solar investment, increase efficiency, and save money.'
+Encourage homeowners and businesses to protect their solar investment, increase efficiency, and save money.
+;'
  
   // Standard contact message to include in every response:
 const contactDetails = `

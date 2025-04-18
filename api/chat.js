@@ -7,15 +7,26 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Missing OpenAI API key." });
   }
 
+  // Fetch data from Supabase
+  let faqs = [];
+  let supabaseError = null;
+
   try {
-    const { data: faqs, error: supabaseError } = await supabase.from('faqs').select('*');
-    if (supabaseError) {
-      console.error("❌ Supabase fetch error:", supabaseError);
+    const { data, error } = await supabase.from('faqs').select('*');
+    if (error) {
+      console.error("❌ Supabase fetch error:", error);
+      supabaseError = error;
     } else {
+      faqs = data;
       console.log("✅ Supabase FAQs fetched:", faqs);
     }
   } catch (err) {
     console.error("🔥 Supabase fetch exception:", err);
+    supabaseError = err;
+  }
+
+  if (supabaseError) {
+    return res.status(500).json({ error: "Error fetching FAQs from Supabase.", details: supabaseError });
   }
 
   // Hardcode the initial prompt in the backend
@@ -66,6 +77,7 @@ export default async function handler(req, res) {
 
   const { prompt } = req.query;
 
+  // Construct final prompt
   const finalPrompt = prompt ? prompt : initialPrompt;
 
   try {
@@ -84,8 +96,13 @@ export default async function handler(req, res) {
       }),
     });
 
-    const data = await response.json();
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("OpenAI API error response:", text);
+      return res.status(response.status).json({ error: `API error: ${response.statusText}`, rawResponse: text });
+    }
 
+    const data = await response.json();
     if (data.error) {
       console.error("❌ OpenAI API Error:", data.error);
       return res.status(500).json({ error: data.error.message });

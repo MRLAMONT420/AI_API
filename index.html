@@ -4,28 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ChatGPT Solar Panel Cleaning</title>
+
+  <!-- ✅ Include marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
   <style>
     body { 
       font-family: sans-serif; 
       padding: 2rem;
       background: #f9f9f9;
       margin: 0;
-      min-height: 100vh; /* Ensure content fills at least the full screen */
-      display: flex; /* Flexbox for easier vertical centering */
+      min-height: 100vh;
+      display: flex;
       flex-direction: column;
-      justify-content: flex-start; /* Align content to the top */
+      justify-content: flex-start;
     }
 
     h1 {
       font-size: 2rem;
       text-align: center;
-      margin-bottom: 1rem; /* Add some space below the title */
+      margin-bottom: 1rem;
     }
 
     #response { 
       margin-top: 20px;
       font-size: 1.2rem;
-      overflow-wrap: break-word; /* Break long words to prevent overflow */
+      overflow-wrap: break-word;
     }
 
     #question { 
@@ -44,42 +48,56 @@
       box-sizing: border-box;
     }
 
-    /* Media Query for larger screens */
     @media (min-width: 600px) {
       #question, button {
         width: auto;
       }
     }
 
-    /* Ensure there's space at the bottom of the screen */
     .container {
-      flex-grow: 1; /* Allow the container to grow and push content up */
+      flex-grow: 1;
     }
 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #eee;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Ask About Solar Panel Cleaning Services</h1>
 
-    <!-- Display initial response from OpenAI -->
+    <!-- ✅ Response container -->
     <div id="response">Loading response...</div>
 
-    <!-- Input field and button for asking follow-up questions -->
+    <!-- Input and Button -->
     <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
     <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
   </div>
 
   <script>
-    // Fetch the initial response from OpenAI (no need to specify prompt here, backend handles it)
+    // ✅ Fetch the initial response from OpenAI and render with Markdown
     fetch(`/api/chat`)
       .then(res => res.json())
       .then(data => {
-        console.log("💬 API Response:", data); // DEBUG: see what the API sends back
+        console.log("💬 API Response:", data);
 
         if (data.result) {
-          document.getElementById("response").innerText = data.result;
-          // Enable the input field and button after receiving the initial response
+          const html = marked.parse(data.result); // ✅ Convert markdown to HTML
+          document.getElementById("response").innerHTML = html;
+
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
         } else {
@@ -91,7 +109,7 @@
         document.getElementById("response").innerText = "Fetch error: " + err.message;
       });
 
-    // Function to handle the user's follow-up question
+    // ✅ Function to ask follow-up questions and render response with Markdown
     function askQuestion() {
       const question = document.getElementById("question").value;
       const responseDiv = document.getElementById("response");
@@ -101,14 +119,14 @@
         return;
       }
 
-      // Sending the user's question to the backend
       fetch(`/api/chat?prompt=${encodeURIComponent(question)}`)
         .then(res => res.json())
         .then(data => {
           console.log("💬 API Response:", data);
 
           if (data.result) {
-            responseDiv.innerHTML = data.result;
+            const html = marked.parse(data.result); // ✅ Convert markdown to HTML
+            responseDiv.innerHTML = html;
           } else {
             responseDiv.innerHTML = generateErrorMessage();
           }
@@ -118,15 +136,3 @@
           responseDiv.innerHTML = generateErrorMessage();
         });
     }
-
-    // Function to generate the error message with contact info
-    function generateErrorMessage() {
-      return ` 
-        <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>
-        <p>Phone: 0466545251</p>
-        <p>Email: s.r.lamont@proton.me</p>
-      `;
-    }
-  </script>
-</body>
-</html>

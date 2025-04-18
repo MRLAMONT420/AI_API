@@ -71,6 +71,15 @@ export default async function handler(req, res) {
     - Include this contact info at the bottom:
       - Phone: 0466545251
       - Email: s.r.lamont@proton.me`;
+ 
+  // Standard contact message to include in every response:
+const contactDetails = `
+If you have any questions or would like to schedule an appointment, feel free to get in touch:
+
+📞 Phone: 0466545251  
+📧 Email: s.r.lamont@proton.me  
+Don't hesitate to reach out today and book your professional solar panel cleaning service!
+`;
 
   // Query param overrides default prompt
   const { prompt } = req.query;
@@ -88,6 +97,9 @@ ${pricingText}
 
 Now answer this request:
 "${userPrompt}"
+
+Please make sure to include the following contact information at the end of your response:
+${contactDetails}
 `;
 
   // === OpenAI Request ===

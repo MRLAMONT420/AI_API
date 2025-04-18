@@ -98,6 +98,7 @@
           const html = marked.parse(data.result); // ✅ Convert markdown to HTML
           document.getElementById("response").innerHTML = html;
 
+          // Enable the question input and button after receiving the response
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
         } else {
@@ -136,3 +137,15 @@
           responseDiv.innerHTML = generateErrorMessage();
         });
     }
+
+    // Function to generate the error message with contact info
+    function generateErrorMessage() {
+      return ` 
+        <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>
+        <p>Phone: 0466545251</p>
+        <p>Email: s.r.lamont@proton.me</p>
+      `;
+    }
+  </script>
+</body>
+</html>

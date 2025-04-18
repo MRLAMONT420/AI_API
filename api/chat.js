@@ -60,7 +60,7 @@ export default async function handler(req, res) {
 Introduction:
 Briefly introduce the importance of solar panel cleaning and how it helps maximize energy production, lower electricity bills, and extend the lifespan 
 of solar systems.
-Emphasize that regular cleaning can help maintain warranty protection and ensure long-term savings.
+Emphasize that regular cleaning can help maintain warranty protection and ensure long-term savings, mention comstal climates and rural areas.
 Impact of Dirty Panels:
 Mention the average energy generation of a 5kW solar system in NSW (7,000-9,000 kWh/year).
 Explain how dirty panels can reduce efficiency by 15-25%, leading to 1,000-1,750 kWh lost annually, which translates to a $250–$430 annual loss.
@@ -70,10 +70,10 @@ earnings from the grid.
 Include potential extra feed-in earnings (around $60–$84/year) from cleaning.
 Self-Consumption Savings:
 Compare the cost of buying electricity from the grid (around $0.25–$0.30 per kWh) versus generating solar power with cleaned panels. 
-Show how cleaning can save $250–$350 annually on power bills.
+Show how cleaning can save $250–$350 annually on power bills. it could increase earnings by 20% and also decrease amount purchased by 20%
 Cost of Cleaning:
-Mention that the typical cost of a solar panel cleaning service is around $200 and explain why this is a wise investment considering 
-the savings on electricity bills, feed-in tariffs, and warranty protection.
+Mention that panels are a long term investment ,typical cost of a solar panel cleaning service explain why this is a wise investment considering 
+the savings on electricity bills, feed-in tariffs, and warranty protection, and optimal operation of your solar generator.
 Call to Action:
 Encourage homeowners and businesses to schedule cleaning services to protect their solar investment, improve performance, and lower long-term costs.
 The tone should be professional, informative, and persuasive, making it clear that cleaning is a cost-effective way to maximize savings and ensure 

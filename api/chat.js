@@ -55,7 +55,7 @@ export default async function handler(req, res) {
   
   // === Your Hardcoded Prompt (stays as main focus) ===
   const initialPrompt = `Generate a professional and compelling digital business card for a solar panel cleaning service based in New South Wales (NSW), 
-  Australia. The business card should include the following points and should be structured with appropriate headings:
+  Australia. The business card should include the following points and should be structured with appropriate headings, each heading should be bold font:
 
 Introduction:
 Briefly introduce the importance of solar panel cleaning and how it helps maximize energy production, lower electricity bills, and extend the lifespan 
@@ -78,10 +78,7 @@ Call to Action:
 Encourage homeowners and businesses to schedule cleaning services to protect their solar investment, improve performance, and lower long-term costs.
 The tone should be professional, informative, and persuasive, making it clear that cleaning is a cost-effective way to maximize savings and ensure 
 optimal solar performance."
-Search
-Reason
 
-ChatGPT can mak
   - A heading: "Book Your Cleaning Today"
     - Include this contact info at the bottom:
       - Phone: 0466545251

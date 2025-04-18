@@ -142,7 +142,7 @@ try {
     body: JSON.stringify({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: "You are a helpful assistant providing sales and service information." },
+        { role: "system", content: "Speak like a pirate" },
         { role: "user", content: finalPrompt }
       ]
     }),

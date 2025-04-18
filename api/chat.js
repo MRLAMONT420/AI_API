@@ -7,27 +7,27 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Missing OpenAI API key." });
   }
 
-  // Fetch data from Supabase
-  let faqs = [];
-  let supabaseError = null;
+// Fetch data from Supabase
+let faqs = [];
+let supabaseError = null;
 
-  try {
-    const { data, error } = await supabase.from('faqs').select('*');
-    if (error) {
-      console.error("❌ Supabase fetch error:", error);
-      supabaseError = error;
-    } else {
-      faqs = data;
-      console.log("✅ Supabase FAQs fetched:", faqs);
-    }
-  } catch (err) {
-    console.error("🔥 Supabase fetch exception:", err);
-    supabaseError = err;
+try {
+  const { data, error } = await supabase.from('FAQs').select('*');
+  if (error) {
+    console.error("❌ Supabase fetch error:", error);
+    supabaseError = error;
+  } else {
+    faqs = data;
+    console.log("✅ Supabase FAQs fetched:", faqs);
   }
+} catch (err) {
+  console.error("🔥 Supabase fetch exception:", err);
+  supabaseError = err;
+}
 
-  if (supabaseError) {
-    return res.status(500).json({ error: "Error fetching FAQs from Supabase.", details: supabaseError });
-  }
+if (supabaseError) {
+  return res.status(500).json({ error: "Error fetching FAQs from Supabase.", details: supabaseError });
+}
 
   // Hardcode the initial prompt in the backend
   const initialPrompt = `Write a persuasive and well-formatted "business card" to give to homeowners in the Bega Valley encouraging them to request professional solar panel cleaning services. Make the output visually appealing using headings, short paragraphs, and bullet points. Include the following:

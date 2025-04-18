@@ -2,55 +2,73 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Added viewport tag for responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ChatGPT Solar Panel Cleaning</title>
   <style>
     body { 
       font-family: sans-serif; 
-      padding: 2rem; 
-      background: #f9f9f9; 
-      margin: 0; /* Ensures there's no unexpected margin */
+      padding: 2rem;
+      background: #f9f9f9;
+      margin: 0;
+      min-height: 100vh; /* Ensure content fills at least the full screen */
+      display: flex; /* Flexbox for easier vertical centering */
+      flex-direction: column;
+      justify-content: flex-start; /* Align content to the top */
     }
+
     h1 {
-      font-size: 2rem; /* Slightly larger title for readability */
+      font-size: 2rem;
       text-align: center;
+      margin-bottom: 1rem; /* Add some space below the title */
     }
+
     #response { 
-      margin-top: 20px; 
-      font-size: 1.2rem; 
+      margin-top: 20px;
+      font-size: 1.2rem;
+      overflow-wrap: break-word; /* Break long words to prevent overflow */
     }
+
     #question { 
       width: 100%; 
       padding: 10px; 
       margin-bottom: 10px; 
       font-size: 1rem; 
-      box-sizing: border-box; /* To prevent padding from increasing the width */
+      box-sizing: border-box;
     }
+
     button { 
       padding: 10px 15px; 
       font-size: 1rem; 
       cursor: pointer; 
-      width: 100%; /* Full width on smaller screens */
+      width: 100%; 
       box-sizing: border-box;
     }
 
     /* Media Query for larger screens */
     @media (min-width: 600px) {
       #question, button {
-        width: auto; /* Adjust width for larger screens */
+        width: auto;
       }
     }
+
+    /* Ensure there's space at the bottom of the screen */
+    .container {
+      flex-grow: 1; /* Allow the container to grow and push content up */
+    }
+
   </style>
 </head>
 <body>
-  <h1>Ask About Solar Panel Cleaning Services</h1>
+  <div class="container">
+    <h1>Ask About Solar Panel Cleaning Services</h1>
 
-  <!-- Display initial response from OpenAI -->
-  <div id="response">Loading response...</div>
+    <!-- Display initial response from OpenAI -->
+    <div id="response">Loading response...</div>
 
-  <!-- Input field and button for asking follow-up questions -->
-  <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
-  <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
+    <!-- Input field and button for asking follow-up questions -->
+    <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
+    <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
+  </div>
 
   <script>
     // Fetch the initial response from OpenAI (no need to specify prompt here, backend handles it)

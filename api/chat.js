@@ -99,7 +99,7 @@ Don't hesitate to reach out today and book your professional solar panel cleanin
 
   // Build full context to include FAQs and pricing
   const finalPrompt = `
-You are a helpful assistant for a solar panel cleaning business in the Bega Valley.
+You are a helpful assistant for a solar panel cleaning business in the Bega Valley. All responses given should be clearly structure for easy reading
 
 Here are some FAQs from past customers:
 ${faqsText}

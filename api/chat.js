@@ -98,18 +98,23 @@ Don't hesitate to reach out today and book your professional solar panel cleanin
   const userPrompt = prompt || initialPrompt;
 
   // Build full context to include FAQs and pricing
+// Build finalPrompt with markdown formatting instructions for OpenAI
 const finalPrompt = `
-You are a helpful assistant for a solar panel cleaning business in the Bega Valley. All responses should be **clearly structured** for easy reading. Please use the following formatting rules:
+You are a helpful assistant for a solar panel cleaning business in the Bega Valley. All responses should be **clearly structured** for easy reading, using markdown for formatting.
+
+Please make sure to:
 - Use **bold headings** for each section.
 - Use **bullet points** for lists of benefits, features, or important points.
-- Include **tables** where appropriate to present pricing information clearly.
+- Use **tables** where appropriate to present pricing information clearly.
 - Include a **call to action** at the end of your response with contact information.
 
 Here are some FAQs from past customers:
 ${faqsText}
 
-Here is the current pricing list:
-${pricingText}
+Here is the current pricing list in markdown table format:
+| **Service**            | **Price**  | **Description**                               |
+|------------------------|------------|-----------------------------------------------|
+${pricing.map(item => `| **${item.name}**  | $${item.base_price} | _${item.description}_ |`).join("\n")}
 
 Now answer this request:
 "${userPrompt}"
@@ -117,6 +122,7 @@ Now answer this request:
 Please make sure to include the following contact information at the end of your response:
 ${contactDetails}
 `;
+
 
   // === OpenAI Request ===
   try {

@@ -49,8 +49,10 @@ export default async function handler(req, res) {
   const faqsText = faqs.map(faq => `**Q: ${faq.question}**\nA: ${faq.answer}`).join('\n\n');
 
   // Format Pricing
-  const pricingText = pricing.map(item => `• **${item.service}** — $${item.price}`).join('\n');
-
+ const pricingText = pricing.map(item =>
+  `• **${item.name}** — $${item.base_price} ${item.unit_type}\n  _${item.description}_`
+).join('\n');
+  
   // === Your Hardcoded Prompt (stays as main focus) ===
   const initialPrompt = `Write a persuasive and well-formatted "business card" to give to homeowners in the Bega Valley encouraging them to request professional solar panel cleaning services. Make the output visually appealing using headings, short paragraphs, and bullet points. Include the following:
 

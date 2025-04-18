@@ -1,4 +1,5 @@
 import { supabase } from '../supabase.js';
+
 export default async function handler(req, res) {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
@@ -35,8 +36,8 @@ export default async function handler(req, res) {
     - Include this contact info at the bottom:
       - Phone: 0466545251
       - Email: s.r.lamont@proton.me`;
- // Predefined rules for common questions
- 
+
+  // Predefined rules for common questions
   const commonQuestions = {
     "How much could I save with a 1kW solar system?": "For a 1kW system, cleaning can recover up to 15% of lost efficiency, which translates into saving around $50–$75 annually. This prevents you from having to pay 30c/kWh for grid electricity. If you export energy, you could earn from the feed-in tariff (6–9c/kWh).",
     "What could I save with a 2kW solar system?": "With a 2kW system, cleaning could save you about $100–$150 annually by recovering up to 15% of lost efficiency. This saves you from relying on grid electricity at 30c/kWh. Additionally, exporting excess energy can earn you money from the feed-in tariff.",
@@ -50,22 +51,21 @@ export default async function handler(req, res) {
     "How much can I save with a 15kW solar system?": "For a 15kW system, cleaning could save you $750–$900 annually by recovering 20% of lost efficiency. This will lower your electricity bill by reducing your reliance on the grid at 30c/kWh. Exporting energy earns you from the feed-in tariff (6–9c/kWh)."
   };
 
-  // Define dynamic responses based on the system size, with similar rules
+  // Define dynamic responses based on the system size
   const getSavings = (systemSize) => {
-    const lostEfficiency = systemSize * 0.15; // Estimate 15% of lost energy
-    const savingsFromEfficiency = lostEfficiency * 0.25; // Assume $0.25/kWh savings
-    const gridCostSaved = systemSize * 0.3; // Estimate 30c/kWh savings from not using grid
+    const lostEfficiency = systemSize * 0.15;
+    const savingsFromEfficiency = lostEfficiency * 0.25;
+    const gridCostSaved = systemSize * 0.3;
 
     return {
       totalSavings: savingsFromEfficiency + gridCostSaved,
       gridCostSaved,
-      feedInTariffEarnings: systemSize * 0.06 // Assuming feed-in tariff earnings from export
+      feedInTariffEarnings: systemSize * 0.06
     };
   };
 
-  const { prompt } = req.query; // Used for follow-up questions
+  const { prompt } = req.query;
 
-  // If a prompt is passed (follow-up question), handle it
   const finalPrompt = prompt ? prompt : initialPrompt;
 
   try {

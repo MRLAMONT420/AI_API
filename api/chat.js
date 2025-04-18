@@ -57,6 +57,7 @@ export default async function handler(req, res) {
   const initialPrompt = `Create a clear, professional digital business card for a solar panel cleaning service in Bega Valley New South Wales (NSW), Australia.
 The card should:
 - Use **bold headings** for sections
+-present on a HtML page in a nice and asthetic, professional manner
 - Use **bullet points** for key benefits and stats
 - Be informative and persuasive, focusing on cost savings and performance benefits
 

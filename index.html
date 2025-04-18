@@ -2,12 +2,44 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Added viewport tag for responsiveness -->
   <title>ChatGPT Solar Panel Cleaning</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
-    #response { margin-top: 20px; font-size: 1.2rem; }
-    #question { width: 100%; padding: 10px; margin-bottom: 10px; font-size: 1rem; }
-    button { padding: 10px 15px; font-size: 1rem; cursor: pointer; }
+    body { 
+      font-family: sans-serif; 
+      padding: 2rem; 
+      background: #f9f9f9; 
+      margin: 0; /* Ensures there's no unexpected margin */
+    }
+    h1 {
+      font-size: 2rem; /* Slightly larger title for readability */
+      text-align: center;
+    }
+    #response { 
+      margin-top: 20px; 
+      font-size: 1.2rem; 
+    }
+    #question { 
+      width: 100%; 
+      padding: 10px; 
+      margin-bottom: 10px; 
+      font-size: 1rem; 
+      box-sizing: border-box; /* To prevent padding from increasing the width */
+    }
+    button { 
+      padding: 10px 15px; 
+      font-size: 1rem; 
+      cursor: pointer; 
+      width: 100%; /* Full width on smaller screens */
+      box-sizing: border-box;
+    }
+
+    /* Media Query for larger screens */
+    @media (min-width: 600px) {
+      #question, button {
+        width: auto; /* Adjust width for larger screens */
+      }
+    }
   </style>
 </head>
 <body>
@@ -71,7 +103,7 @@
 
     // Function to generate the error message with contact info
     function generateErrorMessage() {
-      return `
+      return ` 
         <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>
         <p>Phone: 0466545251</p>
         <p>Email: s.r.lamont@proton.me</p>

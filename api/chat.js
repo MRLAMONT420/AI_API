@@ -87,7 +87,6 @@ The card should:
 `; // <-- CLOSE this backtick!
 
 const contactDetails = `
-If you have any questions or would like to schedule an appointment, feel free to get in touch:
 
 📞 Phone: 0466545251  
 📧 Email: s.r.lamont@proton.me  

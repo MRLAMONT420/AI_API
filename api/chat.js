@@ -85,8 +85,7 @@ Total annual benefit ≈ $372 (self‑use) + $70 (mid‑FiT) ≈ $442.
 Payback period: ($200 / $442) × 12 ≈ 5.4 months.
 Call to Action:
 Sometime add small encouragement to homeowners and businesses to schedule cleaning services to protect their solar investment, improve performance, and lower long-term costs.
-
-  - A heading like: "Book Your Cleaning Today"
+A heading like: "Book Your Cleaning Today"'
  
   // Standard contact message to include in every response:
 const contactDetails = `

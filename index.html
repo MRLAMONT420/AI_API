@@ -19,7 +19,7 @@
       <!-- Response content -->
       <div class="response-full" id="response">Loading response...</div>
       <!-- Image next to response -->
-      <img id="responseImage" class="response-image" src="images/residentialsolar.jpeg" alt="Related image">
+      <img id="responseImage" class="response-image" style="display: none;" alt="Related image">
     </div>
 
     <!-- Input and Button -->
@@ -45,7 +45,7 @@
       return nextImage;
     }
 
-    // Fetch the initial response and set image
+    // Fetch the initial response and set image after response is loaded
     fetch(`/api/chat`)
       .then(async res => {
         const contentType = res.headers.get("content-type");
@@ -65,8 +65,12 @@
           document.getElementById("response").innerHTML = html;
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
-          // Set the initial image
-          document.getElementById("responseImage").src = getNextImage();
+          
+          // Now that the response has been fetched, set the first image and make it visible
+          const imageUrl = getNextImage();
+          const imageEl = document.getElementById("responseImage");
+          imageEl.src = imageUrl;
+          imageEl.style.display = "block";  // Make the image visible
         } else {
           document.getElementById("response").innerText = "Error: " + (data.error || "No result from OpenAI.");
         }
@@ -93,7 +97,8 @@
           if (data.result) {
             const html = marked.parse(data.result);
             responseDiv.innerHTML = html;
-            imageEl.src = getNextImage();  // Change image each time
+            // Cycle to the next image and update it
+            imageEl.src = getNextImage();
           } else {
             responseDiv.innerHTML = generateErrorMessage();
           }

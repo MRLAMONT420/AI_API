@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solar Panel Cleaning and RPAS Inspections</title>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -15,17 +15,16 @@
   </section>
 
   <div class="container">
-    <!-- Response and image side by side -->
     <div class="response-wrapper">
+      <!-- Response content -->
       <div class="response-full" id="response">Loading response...</div>
-      <img id="responseImage" class="response-image" src="images/residentialsolar.jpeg" alt="Related image" />
+      <!-- Image next to response -->
+      <img id="responseImage" class="response-image" src="images/residentialsolar.jpeg" alt="Related image">
     </div>
 
-    <!-- Input and button underneath -->
-    <div class="input-row">
-      <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
-      <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
-    </div>
+    <!-- Input and Button -->
+    <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
+    <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
   </div>
 
   <script>
@@ -40,22 +39,33 @@
     let imageIndex = 0;
 
     function getNextImage() {
-      const next = imageList[imageIndex];
+      const nextImage = imageList[imageIndex];
       imageIndex = (imageIndex + 1) % imageList.length;
-      return next;
+      return nextImage;
     }
 
     fetch(`/api/chat`)
       .then(async res => {
-        if (!res.ok) throw new Error(await res.text());
-        const data = await res.json();
+        const contentType = res.headers.get("content-type");
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`API error: ${res.status} - ${errorText}`);
+        }
+        if (!contentType || !contentType.includes("application/json")) {
+          const rawText = await res.text();
+          throw new Error(`Expected JSON but got: ${rawText}`);
+        }
+        return res.json();
+      })
+      .then(data => {
         if (data.result) {
-          document.getElementById("response").innerHTML = marked.parse(data.result);
+          const html = marked.parse(data.result);
+          document.getElementById("response").innerHTML = html;
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
           document.getElementById("responseImage").src = getNextImage();
         } else {
-          document.getElementById("response").innerText = "No result.";
+          document.getElementById("response").innerText = "Error: " + (data.error || "No result from OpenAI.");
         }
       })
       .catch(err => {
@@ -68,13 +78,17 @@
       const responseDiv = document.getElementById("response");
       const imageEl = document.getElementById("responseImage");
 
-      if (!question.trim()) return alert("Please enter a question.");
+      if (question.trim() === "") {
+        alert("Please enter a question.");
+        return;
+      }
 
       fetch(`/api/chat?prompt=${encodeURIComponent(question)}`)
         .then(res => res.json())
         .then(data => {
           if (data.result) {
-            responseDiv.innerHTML = marked.parse(data.result);
+            const html = marked.parse(data.result);
+            responseDiv.innerHTML = html;
             imageEl.src = getNextImage();
           } else {
             responseDiv.innerHTML = generateErrorMessage();
@@ -88,7 +102,7 @@
 
     function generateErrorMessage() {
       return `
-        <p>Something went wrong while fetching the information. Please contact us:</p>
+        <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>
         <p>Phone: 0466545251</p>
         <p>Email: s.r.lamont@proton.me</p>
       `;

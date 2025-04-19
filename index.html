@@ -1,23 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solar Panel Cleaning and RPAS Inspections</title>
 
-  <!-- ✅ Include marked.js for Markdown parsing -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
-    body { 
-      font-family: sans-serif; 
-      padding: 2rem;
-      background: #f9f9f9;
+    :root {
+      --primary: #2d6a4f;
+      --accent: #40916c;
+      --light-bg: #f9f9f9;
+      --text-dark: #222;
+    }
+
+    body {
       margin: 0;
-      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--light-bg);
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: var(--primary);
+      padding: 1rem;
+      color: white;
+      text-align: center;
     }
 
     .hero {
@@ -27,116 +38,150 @@
       background-image: url('images/solar-background.jpg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
     }
 
     .hero h1 {
-      position: relative;
-      z-index: 1;
       font-size: 2rem;
-      margin: 0;
       text-align: center;
+      padding: 0 1rem;
     }
 
     .container {
       flex-grow: 1;
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       padding: 2rem;
     }
 
-    #response { 
-      margin-top: 20px;
-      font-size: 1.2rem;
-      overflow-wrap: break-word;
+    #response {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
     }
 
-    #question { 
-      width: 100%; 
-      padding: 10px; 
-      margin-bottom: 10px; 
-      font-size: 1rem; 
-      box-sizing: border-box;
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
     }
 
-    button { 
-      padding: 10px 15px; 
-      font-size: 1rem; 
-      cursor: pointer; 
-      width: 100%; 
-      box-sizing: border-box;
+    #question {
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
     }
 
-    @media (min-width: 600px) {
-      #question, button {
-        width: auto;
-      }
+    button {
+      padding: 0.75rem;
+      font-size: 1rem;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 1rem;
     }
 
     th, td {
       border: 1px solid #ccc;
-      padding: 8px;
+      padding: 0.75rem;
       text-align: left;
     }
 
     th {
       background-color: #eee;
     }
+
+    footer {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+
+    @media (min-width: 600px) {
+      .input-group {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      #question {
+        flex: 1;
+      }
+
+      button {
+        width: auto;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Hero section with background image -->
+  <header>
+    <h2>Solar Panel Cleaning & RPAS Inspections</h2>
+  </header>
+
   <section class="hero">
     <h1>Thank You for Your Interest in Solar Cleaning Services</h1>
   </section>
-  
-  <div class="container">
 
+  <main class="container">
+    <div class="card">
+      <div id="response">Loading response...</div>
 
-    <!-- ✅ Response container -->
-    <div id="response">Loading response...</div>
+      <div class="input-group">
+        <input type="text" id="question" placeholder="Ask about pricing, availability, etc." disabled />
+        <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
+      </div>
+    </div>
+  </main>
 
-    <!-- Input and Button -->
-    <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
-    <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
-  </div>
+  <footer>
+    &copy; 2025 Solar Clean Bega Valley – Clean panels, clean savings.
+  </footer>
 
   <script>
-    // ✅ Fetch the initial response from OpenAI and render with Markdown
     fetch(`/api/chat`)
       .then(async res => {
         const contentType = res.headers.get("content-type");
-
         if (!res.ok) {
           const errorText = await res.text();
           throw new Error(`API error: ${res.status} - ${errorText}`);
         }
-
         if (!contentType || !contentType.includes("application/json")) {
           const rawText = await res.text();
           throw new Error(`Expected JSON but got: ${rawText}`);
         }
-
         return res.json();
       })
       .then(data => {
-        console.log("💬 API Response:", data);
-
         if (data.result) {
-          const html = marked.parse(data.result); // ✅ Convert markdown to HTML
+          const html = marked.parse(data.result);
           document.getElementById("response").innerHTML = html;
-
-          // Enable the question input and button after receiving the response
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
         } else {
@@ -148,23 +193,18 @@
         document.getElementById("response").innerText = "Fetch error: " + err.message;
       });
 
-    // ✅ Function to ask follow-up questions and render response with Markdown
     function askQuestion() {
       const question = document.getElementById("question").value;
       const responseDiv = document.getElementById("response");
-
       if (question.trim() === "") {
         alert("Please enter a question.");
         return;
       }
-
       fetch(`/api/chat?prompt=${encodeURIComponent(question)}`)
         .then(res => res.json())
         .then(data => {
-          console.log("💬 API Response:", data);
-
           if (data.result) {
-            const html = marked.parse(data.result); // ✅ Convert markdown to HTML
+            const html = marked.parse(data.result);
             responseDiv.innerHTML = html;
           } else {
             responseDiv.innerHTML = generateErrorMessage();
@@ -176,12 +216,11 @@
         });
     }
 
-    // Function to generate the error message with contact info
     function generateErrorMessage() {
-      return ` 
+      return `
         <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>
-        <p>Phone: 0466545251</p>
-        <p>Email: s.r.lamont@proton.me</p>
+        <p>📞 Phone: 0466545251</p>
+        <p>📧 Email: s.r.lamont@proton.me</p>
       `;
     }
   </script>

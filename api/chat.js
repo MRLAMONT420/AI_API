@@ -41,8 +41,25 @@ export default async function handler(req, res) {
     pricingError = err;
   }
 
-  if (faqsError || pricingError) {
-    return res.status(500).json({ error: "Error fetching data from Supabase.", details: { faqsError, pricingError } });
+  // === Fetch Services ===
+  let services = [];
+  let servicesError = null;
+
+  try {
+    const { data, error } = await supabase.from('services').select('*');
+    if (error) {
+      console.error("❌ Supabase services error:", error);
+      servicesError = error;
+    } else {
+      services = data;
+    }
+  } catch (err) {
+    console.error("🔥 Supabase services exception:", err);
+    servicesError = err;
+  }
+
+  if (faqsError || pricingError || servicesError) {
+    return res.status(500).json({ error: "Error fetching data from Supabase.", details: { faqsError, pricingError, servicesError } });
   }
 
   // Format FAQs
@@ -52,12 +69,12 @@ export default async function handler(req, res) {
   const pricingText = pricing.map(item =>
     `• **${item.name}** — $${item.base_price} ${item.unit_type}\n  _${item.description}_`
   ).join('\n');
-  
+
   // === Your Hardcoded Prompt (stays as main focus) ===
   const initialPrompt = `Create a clear, professional digital business card for a solar panel cleaning service in Bega Valley New South Wales (NSW), Australia.
 The card should:
 - Use **bold headings** for sections
--present on a in a nice and asthetic, professional manner
+- present on a in a nice and asthetic, professional manner
 - Use **bullet points** for key benefits and stats
 - Be informative and persuasive, focusing on cost savings and performance benefits
 
@@ -84,7 +101,6 @@ The card should:
 - Typical cleaning = $200
 - Annual benefit = ~$442
 - Payback in ~5.4 months
-
 `; // <-- CLOSE this backtick!
 
 const contactDetails = `
@@ -101,15 +117,16 @@ const userPrompt = prompt || initialPrompt;
 // === NEW: Keyword-based section triggers ===
 const faqKeywords = ['faq', 'frequently asked questions', 'questions', 'help', 'assistance', 'inquiries'];
 const pricingKeywords = ['pricing', 'price', 'prices', 'cost', 'rates', 'service price', 'pricing list', 'charges', 'fees', 'how much'];
+const servicesKeywords = ['services', 'offer', 'do you provide', 'what do you offer', 'what services', 'available services'];
 
 const lowerPrompt = userPrompt.toLowerCase();
 
 const includeFaqs = faqKeywords.some(keyword => lowerPrompt.includes(keyword));
 const includePricing = pricingKeywords.some(keyword => lowerPrompt.includes(keyword));
+const includeServices = servicesKeywords.some(keyword => lowerPrompt.includes(keyword));
 
 // === Build final prompt ===
-let finalPrompt = `
-Now answer this request:
+let finalPrompt = `Now answer this request:
 "${userPrompt}"
 
 You are a helpful assistant for a solar panel cleaning business in the Bega Valley. All responses should be **clearly structured** for easy reading, using markdown for formatting.
@@ -117,7 +134,6 @@ You are a helpful assistant for a solar panel cleaning business in the Bega Vall
 
 if (includeFaqs) {
   finalPrompt += `
-
 Here are some FAQs from past customers:
 ${faqsText}
 `;
@@ -125,7 +141,6 @@ ${faqsText}
 
 if (includePricing) {
   finalPrompt += `
-
 Here is the current pricing list in markdown table format:
 | **Service**            | **Price**  | **Description**                               |
 |------------------------|------------|-----------------------------------------------|
@@ -133,8 +148,33 @@ ${pricing.map(item => `| **${item.name}**  | $${item.base_price} | _${item.descr
 `;
 }
 
-finalPrompt += `
+if (includeServices) {
+  const mentionedService = services.find(service =>
+    lowerPrompt.includes(service.name.toLowerCase())
+  );
 
+  if (mentionedService) {
+    finalPrompt += `
+Here is a detailed description of the requested service:
+
+**${mentionedService.name}**  
+${mentionedService.description}
+
+**Why it's beneficial:**  
+${mentionedService.benefits}
+`;
+  } else {
+    finalPrompt += `
+Here are the services we offer:
+
+${services.map(service => `- **${service.name}**`).join('\n')}
+
+Would you like a detailed description of any particular service and why it’s beneficial?
+`;
+  }
+}
+
+finalPrompt += `
 Please make sure to include the following contact information at the end of your response:
 ${contactDetails}
 `;

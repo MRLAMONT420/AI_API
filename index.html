@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Solar Panel Cleaning and RPAS Inspections</title>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -15,20 +15,20 @@
   </section>
 
   <div class="container">
+    <!-- Response and image side by side -->
     <div class="response-wrapper">
-      <!-- Response content -->
       <div class="response-full" id="response">Loading response...</div>
-      <!-- Image next to response -->
-      <img id="responseImage" class="response-image" src="images/residentialsolar.jpeg" alt="Related image">
+      <img id="responseImage" class="response-image" src="images/residentialsolar.jpeg" alt="Related image" />
     </div>
 
-    <!-- Input and Button -->
-    <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
-    <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
+    <!-- Input and button underneath -->
+    <div class="input-row">
+      <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
+      <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
+    </div>
   </div>
 
   <script>
-    // Define a list of images to cycle through
     const imageList = [
       "images/drone.jpg",
       "images/industrialsolar.jpeg",
@@ -37,41 +37,25 @@
       "images/solar-background.jpg"
     ];
 
-    // Initialize an index for cycling through the images
     let imageIndex = 0;
 
-    // Function to cycle to the next image in the list
     function getNextImage() {
-      const nextImage = imageList[imageIndex];
-      imageIndex = (imageIndex + 1) % imageList.length;  // Cycle back to the first image after reaching the last one
-      return nextImage;
+      const next = imageList[imageIndex];
+      imageIndex = (imageIndex + 1) % imageList.length;
+      return next;
     }
 
-    // Fetch the initial response
     fetch(`/api/chat`)
       .then(async res => {
-        const contentType = res.headers.get("content-type");
-        if (!res.ok) {
-          const errorText = await res.text();
-          throw new Error(`API error: ${res.status} - ${errorText}`);
-        }
-        if (!contentType || !contentType.includes("application/json")) {
-          const rawText = await res.text();
-          throw new Error(`Expected JSON but got: ${rawText}`);
-        }
-        return res.json();
-      })
-      .then(data => {
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
         if (data.result) {
-          const html = marked.parse(data.result);
-          document.getElementById("response").innerHTML = html;
+          document.getElementById("response").innerHTML = marked.parse(data.result);
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
-          // Update the image
-          const imageUrl = getNextImage();
-          document.getElementById("responseImage").src = imageUrl;
+          document.getElementById("responseImage").src = getNextImage();
         } else {
-          document.getElementById("response").innerText = "Error: " + (data.error || "No result from OpenAI.");
+          document.getElementById("response").innerText = "No result.";
         }
       })
       .catch(err => {
@@ -79,26 +63,19 @@
         document.getElementById("response").innerText = "Fetch error: " + err.message;
       });
 
-    // Function to handle the question being asked
     function askQuestion() {
       const question = document.getElementById("question").value;
       const responseDiv = document.getElementById("response");
       const imageEl = document.getElementById("responseImage");
 
-      if (question.trim() === "") {
-        alert("Please enter a question.");
-        return;
-      }
+      if (!question.trim()) return alert("Please enter a question.");
 
       fetch(`/api/chat?prompt=${encodeURIComponent(question)}`)
         .then(res => res.json())
         .then(data => {
           if (data.result) {
-            const html = marked.parse(data.result);
-            responseDiv.innerHTML = html;
-            // Cycle to the next image
-            const imageUrl = getNextImage();
-            imageEl.src = imageUrl;  // Update the image each time the Ask button is pressed
+            responseDiv.innerHTML = marked.parse(data.result);
+            imageEl.src = getNextImage();
           } else {
             responseDiv.innerHTML = generateErrorMessage();
           }
@@ -109,10 +86,9 @@
         });
     }
 
-    // Function to generate the error message with contact info
     function generateErrorMessage() {
       return `
-        <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>
+        <p>Something went wrong while fetching the information. Please contact us:</p>
         <p>Phone: 0466545251</p>
         <p>Email: s.r.lamont@proton.me</p>
       `;

@@ -9,37 +9,60 @@
 </head>
 <body>
 
-  <!-- Hero section with background image -->
+  <!-- Hero section -->
   <section class="hero">
     <h1>Thank You for Your Interest in Solar Cleaning Services</h1>
   </section>
 
-  <!-- 🔄 Full-width response section -->
-  <div class="response-full" id="response">
-    Loading response...
-  </div>
-
-  <!-- Input section -->
   <div class="container">
+    <div class="response-wrapper">
+      <!-- Response content -->
+      <div class="response-full" id="response">Loading response...</div>
+      <!-- Image next to response -->
+      <img id="responseImage" class="response-image" src="images/response-pics/clean-panels.jpg" alt="Related image">
+    </div>
+
+    <!-- Input and Button -->
     <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
     <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
   </div>
 
   <script>
+    const keywordImageMap = {
+      "inspection": "images/drone.jpg",
+      "residential": "images/industrialsolar.jpg",
+      "industrial": "images/residentialsolar.jpg",
+      "price": "images/savings.jpg",
+      "background": "images/response-pics/solar-background.jpg",
+    };
+
+    let imageIndex = 0;
+
+    function getImageForPrompt(prompt) {
+      const lowerPrompt = prompt.toLowerCase();
+      for (const keyword in keywordImageMap) {
+        if (lowerPrompt.includes(keyword)) {
+          return keywordImageMap[keyword];
+        }
+      }
+      // Cycle through images if no keyword matched
+      const defaultImages = Object.values(keywordImageMap);
+      const img = defaultImages[imageIndex];
+      imageIndex = (imageIndex + 1) % defaultImages.length;
+      return img;
+    }
+
     fetch(`/api/chat`)
       .then(async res => {
         const contentType = res.headers.get("content-type");
-
         if (!res.ok) {
           const errorText = await res.text();
           throw new Error(`API error: ${res.status} - ${errorText}`);
         }
-
         if (!contentType || !contentType.includes("application/json")) {
           const rawText = await res.text();
           throw new Error(`Expected JSON but got: ${rawText}`);
         }
-
         return res.json();
       })
       .then(data => {
@@ -60,6 +83,7 @@
     function askQuestion() {
       const question = document.getElementById("question").value;
       const responseDiv = document.getElementById("response");
+      const imageEl = document.getElementById("responseImage");
 
       if (question.trim() === "") {
         alert("Please enter a question.");
@@ -72,6 +96,7 @@
           if (data.result) {
             const html = marked.parse(data.result);
             responseDiv.innerHTML = html;
+            imageEl.src = getImageForPrompt(question);
           } else {
             responseDiv.innerHTML = generateErrorMessage();
           }

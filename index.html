@@ -28,33 +28,26 @@
   </div>
 
   <script>
-    const keywordImageMap = {
-      "inspection": "images/drone.jpg",
-      "residential": "images/industrialsolar.jpeg",
-      "industrial": "images/residentialsolar.jpeg",
-      "price": "images/savings.jpeg",
-      "background": "images/response-pics/solar-background.jpg",
-    };
+    // Define a list of images to cycle through
+    const imageList = [
+      "images/drone.jpg",
+      "images/industrialsolar.jpeg",
+      "images/residentialsolar.jpeg",
+      "images/savings.jpeg",
+      "images/response-pics/solar-background.jpg"
+    ];
 
+    // Initialize an index for cycling through the images
     let imageIndex = 0;
-    const defaultImages = Object.values(keywordImageMap);
 
-    // Function to get the appropriate image based on the response content
-    function getImageForResponse(responseText) {
-      console.log("Response Text:", responseText); // Log the response to the console
-      const lowerResponse = responseText.toLowerCase();
-      for (const keyword in keywordImageMap) {
-        if (lowerResponse.includes(keyword)) {
-          console.log(`Image match for keyword: ${keyword}`); // Log when a match is found
-          return keywordImageMap[keyword];
-        }
-      }
-      const fallback = defaultImages[imageIndex];
-      imageIndex = (imageIndex + 1) % defaultImages.length; // Cycle through the images if no match
-      console.log("No keyword match, cycling to next image:", fallback); // Log when cycling happens
-      return fallback;
+    // Function to cycle to the next image in the list
+    function getNextImage() {
+      const nextImage = imageList[imageIndex];
+      imageIndex = (imageIndex + 1) % imageList.length;  // Cycle back to the first image after reaching the last one
+      return nextImage;
     }
 
+    // Fetch the initial response
     fetch(`/api/chat`)
       .then(async res => {
         const contentType = res.headers.get("content-type");
@@ -74,8 +67,8 @@
           document.getElementById("response").innerHTML = html;
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
-          // Update the image based on the response content
-          const imageUrl = getImageForResponse(data.result);
+          // Update the image
+          const imageUrl = getNextImage();
           document.getElementById("responseImage").src = imageUrl;
         } else {
           document.getElementById("response").innerText = "Error: " + (data.error || "No result from OpenAI.");
@@ -103,9 +96,9 @@
           if (data.result) {
             const html = marked.parse(data.result);
             responseDiv.innerHTML = html;
-            // Update the image based on the response content
-            const imageUrl = getImageForResponse(data.result);
-            imageEl.src = imageUrl;  // Dynamically update the image after the response
+            // Cycle to the next image
+            const imageUrl = getNextImage();
+            imageEl.src = imageUrl;  // Update the image each time the Ask button is pressed
           } else {
             responseDiv.innerHTML = generateErrorMessage();
           }

@@ -14,20 +14,21 @@
     <h1>Thank You for Your Interest in Solar Cleaning Services</h1>
   </section>
 
-  <div class="container">
-    <div class="response-wrapper">
-      <!-- Response section (aligned left, spans half the screen) -->
-      <div class="response-full" id="response">
-        Loading response...
-      </div>
-      
-      <!-- Placeholder for an image (or any future content) -->
-      <div class="response-image">
-        <!-- You can insert an image or additional content here -->
-      </div>
+  <!-- 🔄 Response wrapper now outside of container -->
+  <div class="response-wrapper">
+    <!-- Response section (aligned left, spans half the screen) -->
+    <div class="response-full" id="response">
+      Loading response...
     </div>
 
-    <!-- Input and Button -->
+    <!-- Placeholder for image or future content -->
+    <div class="response-image">
+      <!-- Future image or content can go here -->
+    </div>
+  </div>
+
+  <!-- Input section -->
+  <div class="container">
     <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
     <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
   </div>
@@ -52,10 +53,8 @@
       })
       .then(data => {
         if (data.result) {
-          const html = marked.parse(data.result); // Convert markdown to HTML
+          const html = marked.parse(data.result);
           document.getElementById("response").innerHTML = html;
-
-          // Enable the question input and button after receiving the response
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
         } else {
@@ -67,7 +66,6 @@
         document.getElementById("response").innerText = "Fetch error: " + err.message;
       });
 
-    // Function to ask follow-up questions and render response with Markdown
     function askQuestion() {
       const question = document.getElementById("question").value;
       const responseDiv = document.getElementById("response");
@@ -81,7 +79,7 @@
         .then(res => res.json())
         .then(data => {
           if (data.result) {
-            const html = marked.parse(data.result); // Convert markdown to HTML
+            const html = marked.parse(data.result);
             responseDiv.innerHTML = html;
           } else {
             responseDiv.innerHTML = generateErrorMessage();
@@ -93,9 +91,8 @@
         });
     }
 
-    // Function to generate the error message with contact info
     function generateErrorMessage() {
-      return ` 
+      return `
         <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>
         <p>Phone: 0466545251</p>
         <p>Email: s.r.lamont@proton.me</p>

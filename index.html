@@ -1,69 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solar Panel Cleaning and RPAS Inspections</title>
-
-  <!-- ✅ External CSS -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- ✅ Include marked.js for Markdown parsing -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header>
-    <h2>Solar Panel Cleaning & RPAS Inspections</h2>
-  </header>
-
+  <!-- Hero section with background image -->
   <section class="hero">
-    <h1>Power Up with a Sparkling Clean Solar System</h1>
+    <h1>Thank You for Your Interest in Solar Cleaning Services</h1>
   </section>
 
-  <main class="container">
-    <!-- ✅ Full-width response section -->
-    <section class="response-full">
-      <div class="response-wrapper">
-        <div id="response" class="response-text">Loading response...</div>
-        <div class="response-image">
-          <!-- Future image content goes here -->
-        </div>
+  <div class="container">
+    <div class="response-wrapper">
+      <!-- Response section (aligned left, spans half the screen) -->
+      <div class="response-full" id="response">
+        Loading response...
       </div>
-    </section>
-
-    <!-- ✅ Input section stays nicely centered -->
-    <section class="input-card">
-      <div class="input-group">
-        <input type="text" id="question" placeholder="Ask about pricing, availability, etc." disabled />
-        <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
+      
+      <!-- Placeholder for an image (or any future content) -->
+      <div class="response-image">
+        <!-- You can insert an image or additional content here -->
       </div>
-    </section>
+    </div>
 
-  </main>
-
-  <footer>
-    &copy; 2025 Solar Clean Bega Valley – Clean panels, clean savings.
-  </footer>
+    <!-- Input and Button -->
+    <input type="text" id="question" placeholder="Ask a question about prices, availability, or disclaimers" disabled />
+    <button id="askBtn" onclick="askQuestion()" disabled>Ask</button>
+  </div>
 
   <script>
+    // Fetch the initial response from OpenAI and render with Markdown
     fetch(`/api/chat`)
       .then(async res => {
         const contentType = res.headers.get("content-type");
+
         if (!res.ok) {
           const errorText = await res.text();
           throw new Error(`API error: ${res.status} - ${errorText}`);
         }
+
         if (!contentType || !contentType.includes("application/json")) {
           const rawText = await res.text();
           throw new Error(`Expected JSON but got: ${rawText}`);
         }
+
         return res.json();
       })
       .then(data => {
         if (data.result) {
-          const html = marked.parse(data.result);
+          const html = marked.parse(data.result); // Convert markdown to HTML
           document.getElementById("response").innerHTML = html;
+
+          // Enable the question input and button after receiving the response
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
         } else {
@@ -75,18 +67,21 @@
         document.getElementById("response").innerText = "Fetch error: " + err.message;
       });
 
+    // Function to ask follow-up questions and render response with Markdown
     function askQuestion() {
       const question = document.getElementById("question").value;
       const responseDiv = document.getElementById("response");
+
       if (question.trim() === "") {
         alert("Please enter a question.");
         return;
       }
+
       fetch(`/api/chat?prompt=${encodeURIComponent(question)}`)
         .then(res => res.json())
         .then(data => {
           if (data.result) {
-            const html = marked.parse(data.result);
+            const html = marked.parse(data.result); // Convert markdown to HTML
             responseDiv.innerHTML = html;
           } else {
             responseDiv.innerHTML = generateErrorMessage();
@@ -98,11 +93,12 @@
         });
     }
 
+    // Function to generate the error message with contact info
     function generateErrorMessage() {
-      return `
+      return ` 
         <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>
-        <p>📞 Phone: 0466545251</p>
-        <p>📧 Email: s.r.lamont@proton.me</p>
+        <p>Phone: 0466545251</p>
+        <p>Email: s.r.lamont@proton.me</p>
       `;
     }
   </script>

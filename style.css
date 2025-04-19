@@ -2,13 +2,12 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   background-color: #f4f4f4;
 }
 
 .hero {
   background: #002d3d;
-  color: #ffffff;
+  color: #fff;
   text-align: center;
   padding: 50px 20px;
 }
@@ -19,49 +18,54 @@ body {
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
 }
 
+/* Response + image side by side */
 .response-wrapper {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1200px; /* Set max-width for content */
+  justify-content: flex-start;
+  gap: 20px;
   margin-bottom: 20px;
 }
 
 .response-full {
-  flex: 1; /* Allow the response to take available space */
-  background-color: white;
+  flex: 1;
+  background-color: #fff;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-right: 20px;
+  min-height: 200px;
   overflow-wrap: break-word;
 }
 
 .response-image {
-  width: 400px; /* Fixed width for image */
-  height: auto; /* Maintain aspect ratio */
-  object-fit: contain; /* Prevent stretching */
+  width: 400px;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
   border-radius: 8px;
 }
 
-input[type="text"] {
-  padding: 10px;
+/* Input and button below */
+.input-row {
+  display: flex;
+  gap: 10px;
   margin-top: 10px;
-  width: 300px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
   border: 2px solid #ddd;
   border-radius: 4px;
 }
 
 button {
   padding: 10px 15px;
-  margin-left: 10px;
   border: none;
   background-color: #002d3d;
   color: white;
@@ -72,10 +76,5 @@ button {
 
 button:disabled {
   background-color: #ccc;
-  cursor: not-allowed;
-}
-
-input[type="text"]:disabled,
-button:disabled {
   cursor: not-allowed;
 }

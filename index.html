@@ -70,7 +70,7 @@
           document.getElementById("response").innerHTML = html;
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
-          document.getElementById("responseImage").src = getImageForResponse(data.result);
+          document.getElementById("responseImage").src = getImageForResponse(data.result);  // Update image based on response
         } else {
           document.getElementById("response").innerText = "Error: " + (data.error || "No result from OpenAI.");
         }
@@ -96,7 +96,7 @@
           if (data.result) {
             const html = marked.parse(data.result);
             responseDiv.innerHTML = html;
-            imageEl.src = getImageForResponse(data.result);
+            imageEl.src = getImageForResponse(data.result);  // Dynamically update image with the response
           } else {
             responseDiv.innerHTML = generateErrorMessage();
           }

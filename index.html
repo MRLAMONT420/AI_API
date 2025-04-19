@@ -30,24 +30,28 @@
   <script>
     const keywordImageMap = {
       "inspection": "images/drone.jpg",
-      "residential": "images/industrialsolar.jpeg",
-      "industrial": "images/residentialsolar.jpeg",
-      "price": "images/savings.jpeg",
+      "residential": "images/industrialsolar.jpg",
+      "industrial": "images/residentialsolar.jpg",
+      "price": "images/savings.jpg",
       "background": "images/response-pics/solar-background.jpg",
     };
 
     let imageIndex = 0;
     const defaultImages = Object.values(keywordImageMap);
 
+    // Function to get the appropriate image based on the response content
     function getImageForResponse(responseText) {
+      console.log("Response Text:", responseText); // Log the response to the console
       const lowerResponse = responseText.toLowerCase();
       for (const keyword in keywordImageMap) {
         if (lowerResponse.includes(keyword)) {
+          console.log(`Image match for keyword: ${keyword}`); // Log when a match is found
           return keywordImageMap[keyword];
         }
       }
       const fallback = defaultImages[imageIndex];
-      imageIndex = (imageIndex + 1) % defaultImages.length;
+      imageIndex = (imageIndex + 1) % defaultImages.length; // Cycle through the images if no match
+      console.log("No keyword match, cycling to next image:", fallback); // Log when cycling happens
       return fallback;
     }
 
@@ -70,7 +74,9 @@
           document.getElementById("response").innerHTML = html;
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
-          document.getElementById("responseImage").src = getImageForResponse(data.result);  // Update image based on response
+          // Update the image based on the response content
+          const imageUrl = getImageForResponse(data.result);
+          document.getElementById("responseImage").src = imageUrl;
         } else {
           document.getElementById("response").innerText = "Error: " + (data.error || "No result from OpenAI.");
         }
@@ -80,6 +86,7 @@
         document.getElementById("response").innerText = "Fetch error: " + err.message;
       });
 
+    // Function to handle the question being asked
     function askQuestion() {
       const question = document.getElementById("question").value;
       const responseDiv = document.getElementById("response");
@@ -96,7 +103,9 @@
           if (data.result) {
             const html = marked.parse(data.result);
             responseDiv.innerHTML = html;
-            imageEl.src = getImageForResponse(data.result);  // Dynamically update image with the response
+            // Update the image based on the response content
+            const imageUrl = getImageForResponse(data.result);
+            imageEl.src = imageUrl;  // Dynamically update the image after the response
           } else {
             responseDiv.innerHTML = generateErrorMessage();
           }
@@ -107,6 +116,7 @@
         });
     }
 
+    // Function to generate the error message with contact info
     function generateErrorMessage() {
       return `
         <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>

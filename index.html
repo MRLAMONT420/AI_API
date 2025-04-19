@@ -38,12 +38,14 @@
 
     let imageIndex = 0;
 
+    // Function to cycle through images
     function getNextImage() {
       const nextImage = imageList[imageIndex];
-      imageIndex = (imageIndex + 1) % imageList.length;
+      imageIndex = (imageIndex + 1) % imageList.length;  // Cycle through the images
       return nextImage;
     }
 
+    // Fetch the initial response and set image
     fetch(`/api/chat`)
       .then(async res => {
         const contentType = res.headers.get("content-type");
@@ -63,6 +65,7 @@
           document.getElementById("response").innerHTML = html;
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
+          // Set the initial image
           document.getElementById("responseImage").src = getNextImage();
         } else {
           document.getElementById("response").innerText = "Error: " + (data.error || "No result from OpenAI.");
@@ -73,6 +76,7 @@
         document.getElementById("response").innerText = "Fetch error: " + err.message;
       });
 
+    // Function to handle the question being asked
     function askQuestion() {
       const question = document.getElementById("question").value;
       const responseDiv = document.getElementById("response");
@@ -89,7 +93,7 @@
           if (data.result) {
             const html = marked.parse(data.result);
             responseDiv.innerHTML = html;
-            imageEl.src = getNextImage();
+            imageEl.src = getNextImage();  // Change image each time
           } else {
             responseDiv.innerHTML = generateErrorMessage();
           }
@@ -100,6 +104,7 @@
         });
     }
 
+    // Function to generate the error message with contact info
     function generateErrorMessage() {
       return `
         <p>Something went wrong while fetching the information. Please don't hesitate to contact us for services and quotes:</p>

@@ -37,19 +37,18 @@
     };
 
     let imageIndex = 0;
+    const defaultImages = Object.values(keywordImageMap);
 
-    function getImageForPrompt(prompt) {
-      const lowerPrompt = prompt.toLowerCase();
+    function getImageForResponse(responseText) {
+      const lowerResponse = responseText.toLowerCase();
       for (const keyword in keywordImageMap) {
-        if (lowerPrompt.includes(keyword)) {
+        if (lowerResponse.includes(keyword)) {
           return keywordImageMap[keyword];
         }
       }
-      // Cycle through images if no keyword matched
-      const defaultImages = Object.values(keywordImageMap);
-      const img = defaultImages[imageIndex];
+      const fallback = defaultImages[imageIndex];
       imageIndex = (imageIndex + 1) % defaultImages.length;
-      return img;
+      return fallback;
     }
 
     fetch(`/api/chat`)
@@ -71,6 +70,7 @@
           document.getElementById("response").innerHTML = html;
           document.getElementById("question").disabled = false;
           document.getElementById("askBtn").disabled = false;
+          document.getElementById("responseImage").src = getImageForResponse(data.result);
         } else {
           document.getElementById("response").innerText = "Error: " + (data.error || "No result from OpenAI.");
         }
@@ -96,7 +96,7 @@
           if (data.result) {
             const html = marked.parse(data.result);
             responseDiv.innerHTML = html;
-            imageEl.src = getImageForPrompt(question);
+            imageEl.src = getImageForResponse(data.result);
           } else {
             responseDiv.innerHTML = generateErrorMessage();
           }

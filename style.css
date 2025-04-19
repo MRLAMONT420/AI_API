@@ -50,12 +50,13 @@ header {
   margin: 0 auto;
 }
 
-/* Full-width response section */
+/* Full-width response section, aligned left and spans up to the center */
 .response-full {
-  width: 100%;
+  width: 50vw; /* Half the screen width */
   background: #ffffff;
   padding: 2rem 1rem;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-right: auto; /* Align to left side */
 }
 
 /* Centered input card below */

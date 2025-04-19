@@ -1,1 +1,150 @@
+:root {
+  --primary: #0A4D68;
+  --accent-blue: #3ABEF9;
+  --accent-green: #70E000;
+  --accent-yellow: #F9C74F;
+  --bg-light: #f4f4f4;
+  --text-dark: #222;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  background-color: var(--primary);
+  padding: 1rem;
+  color: white;
+  text-align: center;
+}
+
+.hero {
+  height: 30vh;
+  min-height: 200px;
+  background-image: url('images/solar-background.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.hero h1 {
+  font-size: 2rem;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.container {
+  flex-grow: 1;
+  padding: 2rem 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+}
+
+.response-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.response-text {
+  flex: 1;
+}
+
+.response-image {
+  flex: 1;
+  display: none; /* hidden by default */
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Show image beside content on desktop */
+@media (min-width: 768px) {
+  .response-wrapper {
+    flex-direction: row;
+  }
+
+  .response-image {
+    display: flex;
+  }
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+#question {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+}
+
+button {
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: var(--accent-blue);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: var(--primary);
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+th {
+  background-color: var(--accent-yellow);
+}
+
+footer {
+  background: var(--primary);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
 

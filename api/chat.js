@@ -133,10 +133,7 @@ You are a helpful assistant for a solar panel cleaning business in the Bega Vall
 `;
 
 if (includeFaqs) {
-  finalPrompt += `
-Here are some FAQs from past customers:
-${faqsText}
-`;
+  finalPrompt += `\nHere are some FAQs from past customers:\n${faqsText}\n`;
 }
 
 if (includePricing) {
@@ -149,6 +146,7 @@ ${pricing.map(item => `| **${item.name}**  | $${item.base_price} | _${item.descr
 }
 
 if (includeServices) {
+  // Check if any of the services match the query
   const mentionedService = services.find(service =>
     lowerPrompt.includes(service.name.toLowerCase())
   );
@@ -174,10 +172,7 @@ Would you like a detailed description of any particular service and why it’s b
   }
 }
 
-finalPrompt += `
-Please make sure to include the following contact information at the end of your response:
-${contactDetails}
-`;
+finalPrompt += `\nPlease make sure to include the following contact information at the end of your response:\n${contactDetails}`;
 
 // === Log Final Prompt Length ===
 console.log("🧪 Final prompt length:", finalPrompt.length);
